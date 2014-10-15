@@ -22,7 +22,6 @@ class Board
   
   def initialize(dup = false)
     @grid = Array.new(8) { Array.new(8) { nil } }
-    # @current_tile = [5,0]
     place_pieces_on_board unless dup
   end
   
@@ -77,8 +76,6 @@ class Board
     end
   end
   
-
-  
   def can_castle?(color, dir)
     return false if in_check?(color)
     row, col = get_row(color), get_col(dir)
@@ -101,17 +98,13 @@ class Board
     true
   end
   
-
-  
-  
   def invalid_casle_pos?(king, rook)
     king.nil? || king.has_moved || rook.nil? || rook.has_moved
   end
   
   def combine_pos(pos1, pos2)
     [pos1[0] + pos2[0], pos1[1] + pos2[1]]
-  end
-  
+  end 
   
   def create_queen_at_pos(pos, color)
     self[pos] = Queen.new(pos, self, color)
@@ -182,11 +175,6 @@ class Board
         processed_piece = el.nil? ? "  ".on_light_white : piece.on_light_white
       end
       print processed_piece
-      # if [row_index, col_index] == @current_tile
-#         print processed_piece.yellow.on_magenta.blink
-#       else
-#         print processed_piece
-#       end
     end
   
     def each_piece
@@ -211,11 +199,11 @@ class Board
     end
     
     def get_row(color)
-      row = color==:white ? 7 : 0
+      row = color == :white ? 7 : 0
     end
   
     def get_col(dir)
-      col = dir==:left ? 0 : 7
+      col = dir == :left ? 0 : 7
     end
   
     def valid_start_piece!(start_piece, color)
@@ -282,5 +270,5 @@ class Board
         end
       end
     end
-  
+
 end
