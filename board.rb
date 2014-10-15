@@ -22,7 +22,6 @@ class Board
   
   def initialize(dup = false)
     @grid = Array.new(8) { Array.new(8) { nil } }
-    # @current_tile = [5,0]
     place_pieces_on_board unless dup
   end
   
