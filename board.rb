@@ -16,38 +16,32 @@ class CantMoveIntoCheck < StandardError
 end
 
 class Board
-  attr_reader :grid
+  attr_reader :grid, :current_tile
   
   ALPHABET = ("A".."H").to_a
   
   def initialize(dup = false)
     @grid = Array.new(8) { Array.new(8) { nil } }
+    # @current_tile = [5,0]
     place_pieces_on_board unless dup
   end
   
   def display_board
-
     puts "Welcome to Chess!"
     puts "#{(ALPHABET.join "|")}|"
-    @grid.each_with_index do |row, row_index|
-      row.each_with_index do |el, col_index|
-        get_piece_color(el, row_index, col_index)
-      end
-      puts 8 - row_index 
+    each_piece do |el, row_index, col_index| 
+      get_piece_color(el, row_index, col_index)
+      puts 8 - row_index if col_index == 7
     end
+      
     puts "#{(ALPHABET.join "|")}|"
     puts "-----------------"
   end
   
-  # def each_piece
-  #   if block_given?
-  #     @grid.each_with_index do |row, row_index|
-  #       row.each_with_index do |el, col_index|
-  #         yield(row_index, col_index, el)
-  #       end
-  #     end
-  #   end
-  # end
+  def set_current_tile(pos)
+    @current_tile = pos
+  end
+
   def in_check?(color)
     king_pos = find_king_position(color)
     enemy_includes_position?(king_pos, color)
@@ -59,9 +53,68 @@ class Board
     self[start_pos] = nil
     
     start_piece.set_new_current_position(end_pos)
-    start_piece.take_first_move if start_piece.is_a?(Pawn)
-
+    if start_piece.is_a?(Pawn) || start_piece.is_a?(Rook) || start_piece.is_a?(King) 
+      start_piece.take_first_move
+    end
+    
     self
+  end
+  
+  def castle(color, dir)
+    if can_castle?(color, dir)
+      row, col = get_row(color), get_col(dir)
+      king_delta = dir==:left ? [0, -2] : [0, 2]
+      rook_delta = dir==:left ? [0, 3] : [0, -2]
+      new_king_pos = combine_pos([row, 4], king_delta)
+      new_rook_pos = combine_pos([row, col], rook_delta)
+      move_piece([row, 4], new_king_pos)
+      move_piece([row, col], new_rook_pos)
+
+      true
+    else
+      puts "Can't castle that."
+      false
+    end
+  end
+  
+
+  
+  def can_castle?(color, dir)
+    return false if in_check?(color)
+    row, col = get_row(color), get_col(dir)
+    delta = dir==:left ? [0, -1] : [0, 1]
+    
+    king_pos, rook_pos = [row, 4], [row, col]
+    rook, king = self[rook_pos], self[king_pos]
+    
+    return false if invalid_casle_pos?(king, rook)
+    
+    new_pos = combine_pos(king_pos, delta)
+    until new_pos.last < 2 || new_pos.last > 6
+      return false if !self[new_pos].nil?
+      new_board = self.dup
+      new_board.move_piece(king_pos, new_pos)
+      return false if new_board.in_check?(color)
+      new_pos = combine_pos(new_pos, delta)
+    end
+    
+    true
+  end
+  
+
+  
+  
+  def invalid_casle_pos?(king, rook)
+    king.nil? || king.has_moved || rook.nil? || rook.has_moved
+  end
+  
+  def combine_pos(pos1, pos2)
+    [pos1[0] + pos2[0], pos1[1] + pos2[1]]
+  end
+  
+  
+  def create_queen_at_pos(pos, color)
+    self[pos] = Queen.new(pos, self, color)
   end
   
   def valid_move?(start_pos, end_pos, color)
@@ -69,7 +122,7 @@ class Board
     valid_start_piece!(start_piece, color)
     if start_piece.possible_valid_moves.include?(end_pos)
       if start_piece.move_into_check?(end_pos)
-        raise CantMoveIntoCheck.new "Cannot make that move since your king is in check."
+        raise CantMoveIntoCheck.new "Cannot make that move since your king is/would be in check."
       else
         return true
       end
@@ -99,23 +152,21 @@ class Board
   
   def dup
     new_board = self.class.new(true)
-    @grid.each_with_index do |row, row_index|
-      row.each_with_index do |el, col_index|
-        if !el.nil?
-          new_board[[row_index, col_index]] = 
-                      el.class.new([row_index, col_index], new_board, el.color)
-          if el.is_a?(Pawn)
-            new_board[[row_index, col_index]].take_first_move if el.move_taken
-          end 
+    each_piece do |el, row_index, col_index|
+      if !el.nil?
+        new_board[[row_index, col_index]] = 
+                  el.class.new([row_index, col_index], new_board, el.color)
+        if el.is_a?(Pawn)
+          new_board[[row_index, col_index]].take_first_move if el.move_taken
         end
-      end
+      end 
     end
     
     new_board
   end
   
   private
-  
+
     def get_piece_color(el, row_index, col_index)
       if !el.nil?
         if el.color == :white
@@ -124,24 +175,47 @@ class Board
           piece = "#{el.piece_unicode} ".light_blue
         end
       end
+      
       if row_index.even? && col_index.odd? || col_index.even? && row_index.odd?
-        print el.nil? ? "  ".on_black : piece.on_black
+        processed_piece = el.nil? ? "  ".on_black : piece.on_black
       else
-        print el.nil? ? "  ".on_light_white : piece.on_light_white
+        processed_piece = el.nil? ? "  ".on_light_white : piece.on_light_white
+      end
+      print processed_piece
+      # if [row_index, col_index] == @current_tile
+#         print processed_piece.yellow.on_magenta.blink
+#       else
+#         print processed_piece
+#       end
+    end
+  
+    def each_piece
+      if block_given?
+        @grid.each_with_index do |row, row_index|
+          row.each_with_index do |el, col_index|
+            yield(el, row_index, col_index)
+          end
+        end
       end
     end
   
     def enemy_includes_position?(pos, color)
       enemy_possible_moves = []
-      @grid.each_with_index do |row, row_index|
-        row.each_with_index do |el, col_index|
-          if !el.nil? && el.color != color
-            enemy_possible_moves += el.possible_valid_moves
-          end
+      each_piece do |el, row_index, col_index|
+        if !el.nil? && el.color != color
+          enemy_possible_moves += el.possible_valid_moves
         end
       end
     
       enemy_possible_moves.include?(pos)
+    end
+    
+    def get_row(color)
+      row = color==:white ? 7 : 0
+    end
+  
+    def get_col(dir)
+      col = dir==:left ? 0 : 7
     end
   
     def valid_start_piece!(start_piece, color)
@@ -154,15 +228,11 @@ class Board
   
     def your_moves(color)
       your_possible_moves = []
-      @grid.each_with_index do |row, row_index|
-        row.each_with_index do |el, col_index|
-          if !el.nil? && el.color == color
-            subanswer = el.possible_valid_moves
-            subanswer.select! do |move|
-              !el.move_into_check?(move)
-            end
-            your_possible_moves += subanswer
-          end
+      each_piece do |el, row_index, col_index|
+        if !el.nil? && el.color == color
+          subanswer = el.possible_valid_moves
+          subanswer.select! { |move| !el.move_into_check?(move) }
+          your_possible_moves += subanswer
         end
       end
 
@@ -170,11 +240,9 @@ class Board
     end
   
     def find_king_position(color)
-      @grid.each_with_index do |row, row_index|
-        row.each_with_index do |el, col_index|
-          if el.is_a?(King) && el.color == color
-            return [row_index, col_index]
-          end
+      each_piece do |el, row_index, col_index|
+        if el.is_a?(King) && el.color == color
+          return [row_index, col_index]
         end
       end
     end

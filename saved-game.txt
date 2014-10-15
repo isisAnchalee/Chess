@@ -1,0 +1,252 @@
+--- !ruby/object:Game
+board: &70116050686900 !ruby/object:Board
+  grid:
+  - - !ruby/object:Rook
+      pos:
+      - 0
+      - 0
+      board: *70116050686900
+      color: :black
+      piece_unicode: ♜
+      has_moved: false
+    - !ruby/object:Knight
+      pos:
+      - 0
+      - 1
+      board: *70116050686900
+      color: :black
+      piece_unicode: ♞
+    - !ruby/object:Bishop
+      pos:
+      - 0
+      - 2
+      board: *70116050686900
+      color: :black
+      piece_unicode: ♝
+    - !ruby/object:Queen
+      pos:
+      - 0
+      - 3
+      board: *70116050686900
+      color: :black
+      piece_unicode: ♛
+    - !ruby/object:King
+      pos:
+      - 0
+      - 4
+      board: *70116050686900
+      color: :black
+      piece_unicode: ♚
+      has_moved: false
+    - !ruby/object:Bishop
+      pos:
+      - 0
+      - 5
+      board: *70116050686900
+      color: :black
+      piece_unicode: ♝
+    - !ruby/object:Knight
+      pos:
+      - 0
+      - 6
+      board: *70116050686900
+      color: :black
+      piece_unicode: ♞
+    - !ruby/object:Rook
+      pos:
+      - 0
+      - 7
+      board: *70116050686900
+      color: :black
+      piece_unicode: ♜
+      has_moved: false
+  - - !ruby/object:Pawn
+      pos:
+      - 1
+      - 0
+      board: *70116050686900
+      color: :black
+      piece_unicode: ♟
+      move_taken: false
+    - 
+    - !ruby/object:Pawn
+      pos:
+      - 1
+      - 2
+      board: *70116050686900
+      color: :black
+      piece_unicode: ♟
+      move_taken: false
+    - !ruby/object:Pawn
+      pos:
+      - 1
+      - 3
+      board: *70116050686900
+      color: :black
+      piece_unicode: ♟
+      move_taken: false
+    - !ruby/object:Pawn
+      pos:
+      - 1
+      - 4
+      board: *70116050686900
+      color: :black
+      piece_unicode: ♟
+      move_taken: false
+    - !ruby/object:Pawn
+      pos:
+      - 1
+      - 5
+      board: *70116050686900
+      color: :black
+      piece_unicode: ♟
+      move_taken: false
+    - !ruby/object:Pawn
+      pos:
+      - 1
+      - 6
+      board: *70116050686900
+      color: :black
+      piece_unicode: ♟
+      move_taken: false
+    - !ruby/object:Pawn
+      pos:
+      - 1
+      - 7
+      board: *70116050686900
+      color: :black
+      piece_unicode: ♟
+      move_taken: false
+  - - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+  - - 
+    - !ruby/object:Pawn
+      pos:
+      - 3
+      - 1
+      board: *70116050686900
+      color: :black
+      piece_unicode: ♟
+      move_taken: true
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+  - - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+  - - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+  - - !ruby/object:Pawn
+      pos:
+      - 6
+      - 0
+      board: *70116050686900
+      color: :white
+      piece_unicode: ♙
+      move_taken: false
+    - !ruby/object:Pawn
+      pos:
+      - 6
+      - 1
+      board: *70116050686900
+      color: :white
+      piece_unicode: ♙
+      move_taken: false
+    - !ruby/object:Pawn
+      pos:
+      - 6
+      - 2
+      board: *70116050686900
+      color: :white
+      piece_unicode: ♙
+      move_taken: false
+    - !ruby/object:Pawn
+      pos:
+      - 6
+      - 3
+      board: *70116050686900
+      color: :white
+      piece_unicode: ♙
+      move_taken: false
+    - !ruby/object:Pawn
+      pos:
+      - 6
+      - 4
+      board: *70116050686900
+      color: :white
+      piece_unicode: ♙
+      move_taken: false
+    - !ruby/object:Pawn
+      pos:
+      - 6
+      - 5
+      board: *70116050686900
+      color: :white
+      piece_unicode: ♙
+      move_taken: false
+    - !ruby/object:Pawn
+      pos:
+      - 6
+      - 6
+      board: *70116050686900
+      color: :white
+      piece_unicode: ♙
+      move_taken: false
+    - !ruby/object:Pawn
+      pos:
+      - 6
+      - 7
+      board: *70116050686900
+      color: :white
+      piece_unicode: ♙
+      move_taken: false
+  - - !ruby/object:Rook
+      pos:
+      - 7
+      - 0
+      board: *70116050686900
+      color: :white
+      piece_unicode: ♖
+      has_moved: false
+    - 
+    - 
+    - 
+    - 
+    - !ruby/object:Rook
+      pos:
+      - 7
+      - 5
+      board: *70116050686900
+      color: :white
+      piece_unicode: ♖
+      has_moved: true
+    - !ruby/object:King
+      pos:
+      - 7
+      - 6
+      board: *70116050686900
+      color: :white
+      piece_unicode: ♔
+      has_moved: true
+    - 
+current_turn: :white
