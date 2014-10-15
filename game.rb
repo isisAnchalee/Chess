@@ -22,21 +22,6 @@ class Game
     end
   end
   
-  # def update_cursor
-  #   input = $stdin.getch
-  #   actioned = false
-  #   until actioned
-  #     case input
-  #     when "w"
-  #       @board.set_current_tile([@board.current_tile.first - 1, @board.current_tile.last])
-  #       system("clear")
-  #       @board.display_board
-  #     else
-  #       exit
-  #     end
-  #   end
-  # end
-  
   def run_game
     system("clear")
     @board.display_board
