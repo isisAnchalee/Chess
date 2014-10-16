@@ -79,7 +79,7 @@ class Board
   def can_castle?(color, dir)
     return false if in_check?(color)
     row, col = get_row(color), get_col(dir)
-    delta = dir==:left ? [0, -1] : [0, 1]
+    delta = dir == :left ? [0, -1] : [0, 1]
     
     king_pos, rook_pos = [row, 4], [row, col]
     rook, king = self[rook_pos], self[king_pos]
