@@ -89,7 +89,6 @@ class Game
       [input_1, input_2]
     end
   
-  
     def parse_user_input(array)
       return array unless array.is_a?(Array)
       
