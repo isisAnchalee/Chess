@@ -22,6 +22,7 @@ class Game
     end
   end
   
+<<<<<<< HEAD
   # def update_cursor
   #   input = $stdin.getch
   #   actioned = false
@@ -37,6 +38,8 @@ class Game
   #   end
   # end
   
+=======
+>>>>>>> e91f73200e651b091610fc6096e921dc9c9de2a9
   def run_game
     system("clear")
     @board.display_board
@@ -104,7 +107,6 @@ class Game
       [input_1, input_2]
     end
   
-  
     def parse_user_input(array)
       return array unless array.is_a?(Array)
       
@@ -170,4 +172,8 @@ end
 if __FILE__ == $PROGRAM_NAME
   game = Game.new
   game.start_game
+<<<<<<< HEAD
 end
+=======
+end
+>>>>>>> e91f73200e651b091610fc6096e921dc9c9de2a9

@@ -15,7 +15,11 @@ class King < SteppingPiece
   
   def initialize(pos, board, color)
     super(pos, board, color)
+<<<<<<< HEAD
     @piece_unicode = color==:white ? "\u2654" : "\u265A"
+=======
+    @piece_unicode = color == :white ? "\u2654" : "\u265A"
+>>>>>>> e91f73200e651b091610fc6096e921dc9c9de2a9
     @has_moved = false
   end
   

@@ -77,12 +77,19 @@ class Board
     end
   end
   
+<<<<<<< HEAD
 
   
   def can_castle?(color, dir)
     return false if in_check?(color)
     row, col = get_row(color), get_col(dir)
     delta = dir==:left ? [0, -1] : [0, 1]
+=======
+  def can_castle?(color, dir)
+    return false if in_check?(color)
+    row, col = get_row(color), get_col(dir)
+    delta = dir == :left ? [0, -1] : [0, 1]
+>>>>>>> e91f73200e651b091610fc6096e921dc9c9de2a9
     
     king_pos, rook_pos = [row, 4], [row, col]
     rook, king = self[rook_pos], self[king_pos]
@@ -107,8 +114,12 @@ class Board
   
   def combine_pos(pos1, pos2)
     [pos1[0] + pos2[0], pos1[1] + pos2[1]]
+<<<<<<< HEAD
   end
   
+=======
+  end 
+>>>>>>> e91f73200e651b091610fc6096e921dc9c9de2a9
   
   def create_queen_at_pos(pos, color)
     self[pos] = Queen.new(pos, self, color)
@@ -203,11 +214,19 @@ class Board
     end
     
     def get_row(color)
+<<<<<<< HEAD
       row = color==:white ? 7 : 0
     end
   
     def get_col(dir)
       col = dir==:left ? 0 : 7
+=======
+      row = color == :white ? 7 : 0
+    end
+  
+    def get_col(dir)
+      col = dir == :left ? 0 : 7
+>>>>>>> e91f73200e651b091610fc6096e921dc9c9de2a9
     end
   
     def valid_start_piece!(start_piece, color)
@@ -274,5 +293,9 @@ class Board
         end
       end
     end
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> e91f73200e651b091610fc6096e921dc9c9de2a9
 end
