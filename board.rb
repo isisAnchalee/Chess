@@ -101,9 +101,6 @@ class Board
     true
   end
   
-
-  
-  
   def invalid_casle_pos?(king, rook)
     king.nil? || king.has_moved || rook.nil? || rook.has_moved
   end
@@ -182,11 +179,6 @@ class Board
         processed_piece = el.nil? ? "  ".on_light_white : piece.on_light_white
       end
       print processed_piece
-      # if [row_index, col_index] == @current_tile
-#         print processed_piece.yellow.on_magenta.blink
-#       else
-#         print processed_piece
-#       end
     end
   
     def each_piece
