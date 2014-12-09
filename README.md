@@ -1,6 +1,7 @@
 #Ruby Chess
 ==============
 4-Step Check Mate:
+
 f2, f3
 
 e7, e5
