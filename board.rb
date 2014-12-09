@@ -22,8 +22,7 @@ class Board
   
   def initialize(dup = false)
     @grid = Array.new(8) { Array.new(8) { nil } }
-    # @current_tile = [5,0]
-    place_pieces_on_board unless dup
+    populate_board unless dup
   end
   
   def display_board
@@ -63,8 +62,8 @@ class Board
   def castle(color, dir)
     if can_castle?(color, dir)
       row, col = get_row(color), get_col(dir)
-      king_delta = dir==:left ? [0, -2] : [0, 2]
-      rook_delta = dir==:left ? [0, 3] : [0, -2]
+      king_delta = dir == :left ? [0, -2] : [0, 2]
+      rook_delta = dir == :left ? [0, 3] : [0, -2]
       new_king_pos = combine_pos([row, 4], king_delta)
       new_rook_pos = combine_pos([row, col], rook_delta)
       move_piece([row, 4], new_king_pos)
@@ -77,19 +76,12 @@ class Board
     end
   end
   
-<<<<<<< HEAD
 
   
   def can_castle?(color, dir)
     return false if in_check?(color)
     row, col = get_row(color), get_col(dir)
     delta = dir==:left ? [0, -1] : [0, 1]
-=======
-  def can_castle?(color, dir)
-    return false if in_check?(color)
-    row, col = get_row(color), get_col(dir)
-    delta = dir == :left ? [0, -1] : [0, 1]
->>>>>>> e91f73200e651b091610fc6096e921dc9c9de2a9
     
     king_pos, rook_pos = [row, 4], [row, col]
     rook, king = self[rook_pos], self[king_pos]
@@ -114,26 +106,20 @@ class Board
   
   def combine_pos(pos1, pos2)
     [pos1[0] + pos2[0], pos1[1] + pos2[1]]
-<<<<<<< HEAD
   end
   
-=======
-  end 
->>>>>>> e91f73200e651b091610fc6096e921dc9c9de2a9
   
   def create_queen_at_pos(pos, color)
     self[pos] = Queen.new(pos, self, color)
   end
   
-  def valid_move?(start_pos, end_pos, color)
-    start_piece = self[start_pos]
-    valid_start_piece!(start_piece, color)
-    if start_piece.possible_valid_moves.include?(end_pos)
-      if start_piece.move_into_check?(end_pos)
-        raise CantMoveIntoCheck.new "Cannot make that move since your king is/would be in check."
-      else
-        return true
-      end
+  def valid_move?(from_pos, to_pos, color)
+    piece_at_from = self[from_pos]
+    valid_from_pos!(piece_at_from, color)
+    if piece_at_from.possible_valid_moves.include?(to_pos)
+      cant_check_error = "Cannot make that move since your king is/would be in check."
+      raise CantMoveIntoCheck.new(cant_check_error) if piece_at_from.move_into_check?(to_pos)
+      return true
     end
     
     false
@@ -177,11 +163,7 @@ class Board
 
     def get_piece_color(el, row_index, col_index)
       if !el.nil?
-        if el.color == :white
-          piece = "#{el.piece_unicode} ".green
-        else
-          piece = "#{el.piece_unicode} ".light_blue
-        end
+        piece = el.color == :white ? "#{el.piece_unicode} ".green : "#{el.piece_unicode} ".light_blue
       end
       
       if row_index.even? && col_index.odd? || col_index.even? && row_index.odd?
@@ -190,6 +172,7 @@ class Board
         processed_piece = el.nil? ? "  ".on_light_white : piece.on_light_white
       end
       print processed_piece
+
     end
   
     def each_piece
@@ -214,25 +197,17 @@ class Board
     end
     
     def get_row(color)
-<<<<<<< HEAD
       row = color==:white ? 7 : 0
     end
   
     def get_col(dir)
       col = dir==:left ? 0 : 7
-=======
-      row = color == :white ? 7 : 0
     end
   
-    def get_col(dir)
-      col = dir == :left ? 0 : 7
->>>>>>> e91f73200e651b091610fc6096e921dc9c9de2a9
-    end
-  
-    def valid_start_piece!(start_piece, color)
-      if start_piece.nil?
+    def valid_from_pos!(piece_at_from, color)
+      if piece_at_from.nil?
         raise NoPieceError.new "There is no piece here!"
-      elsif start_piece.color != color
+      elsif piece_at_from.color != color
         raise NotYourPieceError.new "That's not your piece."
       end
     end
@@ -257,45 +232,23 @@ class Board
         end
       end
     end
-  
-    def place_pieces_on_board
-      @grid.each_with_index do |row, row_index|
-        row.each_index do |col_index|
-          if row_index == 6
-            @grid[row_index][col_index] = Pawn.new([row_index,col_index], self, :white)
-          elsif row_index == 1
-            @grid[row_index][col_index] = Pawn.new([row_index,col_index], self, :black)
-          elsif row_index == 0
-            if col_index == 0 || col_index == 7
-              @grid[row_index][col_index] = Rook.new([row_index,col_index], self, :black)
-            elsif col_index == 1 || col_index == 6
-              @grid[row_index][col_index] = Knight.new([row_index,col_index], self, :black)
-            elsif col_index == 2 || col_index == 5
-              @grid[row_index][col_index] = Bishop.new([row_index,col_index], self, :black)
-            elsif col_index == 3
-              @grid[row_index][col_index] = Queen.new([row_index,col_index], self, :black)
-            else
-              @grid[row_index][col_index] = King.new([row_index,col_index], self, :black)
-            end
-          elsif row_index == 7
-            if col_index == 0 || col_index == 7
-              @grid[row_index][col_index] = Rook.new([row_index,col_index], self, :white)
-            elsif col_index == 1 || col_index == 6
-              @grid[row_index][col_index] = Knight.new([row_index,col_index], self, :white)
-            elsif col_index == 2 || col_index == 5
-              @grid[row_index][col_index] = Bishop.new([row_index,col_index], self, :white)
-            elsif col_index == 3
-              @grid[row_index][col_index] = Queen.new([row_index,col_index], self, :white)
-            else
-              @grid[row_index][col_index] = King.new([row_index,col_index], self, :white)
-            end
-          end
-        end
-      end
+    
+    def populate_board
+      place_pieces_on_board(:white)
+      place_pieces_on_board(:black)
     end
-<<<<<<< HEAD
   
-=======
-
->>>>>>> e91f73200e651b091610fc6096e921dc9c9de2a9
+    def place_pieces_on_board(color)
+      pawn_row = color == :white ? 6 : 1
+      other_pieces_row = color == :white ? 7 : 0
+      other_pieces = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
+      (0..7).each do |col|
+        @grid[pawn_row][col] = Pawn.new([pawn_row, col], self, color)
+      end
+      other_pieces.each_with_index do |piece, col|
+        @grid[other_pieces_row][col] = piece.new([other_pieces_row, col], self, color)
+      end
+      
+    end
+  
 end

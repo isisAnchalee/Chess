@@ -22,24 +22,6 @@ class Game
     end
   end
   
-<<<<<<< HEAD
-  # def update_cursor
-  #   input = $stdin.getch
-  #   actioned = false
-  #   until actioned
-  #     case input
-  #     when "w"
-  #       @board.set_current_tile([@board.current_tile.first - 1, @board.current_tile.last])
-  #       system("clear")
-  #       @board.display_board
-  #     else
-  #       exit
-  #     end
-  #   end
-  # end
-  
-=======
->>>>>>> e91f73200e651b091610fc6096e921dc9c9de2a9
   def run_game
     system("clear")
     @board.display_board
@@ -151,7 +133,6 @@ class Game
       row = (arr_of_input.last.to_i - 8).abs
     
       [row, col] if valid_row_col?(row, col)
-    
     end
   
     def valid_row_col?(row, col)
@@ -164,7 +145,6 @@ class Game
   
     def switch_turn
       @current_turn = @current_turn == :white ? :black : :white
-    
     end
   
 end
@@ -172,8 +152,4 @@ end
 if __FILE__ == $PROGRAM_NAME
   game = Game.new
   game.start_game
-<<<<<<< HEAD
 end
-=======
-end
->>>>>>> e91f73200e651b091610fc6096e921dc9c9de2a9

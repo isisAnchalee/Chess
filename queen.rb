@@ -14,7 +14,7 @@ class Queen < SlidingPiece
   
   def initialize(pos, board, color)
     super(pos, board, color)
-    @piece_unicode = color == :white ? "\u2655" : "\u265B"
+    @piece_unicode = color==:white ? "\u2655" : "\u265B"
   end
   
 end

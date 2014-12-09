@@ -14,7 +14,7 @@ class Pawn < Piece
   
   def initialize(pos, board, color)
     super(pos, board, color)
-    @piece_unicode = color == :white ? "\u2659" : "\u265F"
+    @piece_unicode = color==:white ? "\u2659" : "\u265F"
     @move_taken = false
   end
   
